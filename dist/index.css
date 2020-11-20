@@ -1,5 +1,6 @@
 body {
     margin: 0 auto;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 header, footer {
@@ -9,7 +10,7 @@ header, footer {
 main {
     margin: 0 auto;
     padding: 0;
-    width: 100vw;
+    width: 90vw;
     max-width: 1000px;
     display: flex;
     justify-content: center;
@@ -31,7 +32,14 @@ main {
     max-width: 100px;
     max-height: 100px;
     width: 10vw;
-    height: 10vw;
-    background-color: green;
+    height: 9vw;
     border: 1px solid black;
+}
+
+.alive {
+    background-color: rgb(147, 221, 0);
+}
+
+.dead {
+    background-color: rgb(231, 231, 231);
 }

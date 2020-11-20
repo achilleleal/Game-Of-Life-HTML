@@ -12,15 +12,29 @@
     </header>
 
     <main>
+        <div class="game-info">
+            <h2>Generation: <span id="counter"></span></h2>
+            <button id="start-btn">Start</button>
+            <div>
+                <label for="interval">Replication interval</label>
+                <input 
+                  id="interval" 
+                  name="interval" 
+                  type="number"
+                  min="100" 
+                  step="10"
+                  placeholder="250"
+                />
+            </div>
+        </div>
         <div id="game">
         </div>
     </main>
 
     <footer>
-        Made with love by Sebastián Leal. 2020.
+        <p>Made with love by Sebastián Leal. 2020.</p>
     </footer>
 
-    <!-- <script src='../src/gameOfLife.js' type="application/javascript"></script> -->
     <script src='main.js' type="application/javascript"></script>
     
 </body>

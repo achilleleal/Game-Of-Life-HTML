@@ -1,89 +1,76 @@
 import _ from "lodash";
 
 
-const gameOfLife = (interval, grid, game, counter, callback) => {
+const gameOfLife = (interval, width, counter, callback) => {
 
-    let newGen;
     let gen = 0;
+    let hasNotChanged = 0;
 
-    const loop = setInterval(() => {
-        console.log(gen)
+    const docCells = document.getElementsByClassName('cell');
+    let cellsRef = Array.from(docCells).map(cell => cell.className === 'cell alive' ? 1 : 0);
 
-        game.innerHTML = '';
-        newGen = _.cloneDeep(grid); 
+    const loop = setInterval(() => { 
 
-        for (let y = 0; y < grid.length; y++) {
+        const cells = [...cellsRef]
 
-            const row = document.createElement('div');
-            row.classList.add('row');
+        cells.forEach((cell, i) => {
 
-            for (let x = 0; x < grid[y].length; x++) {
+            const neighbours = lineCells(cells, i) + upperCells(cells, i, width) + bottomCells(cells, i, width)
 
-                const cell = document.createElement('div');
-                cell.classList.add('cell');
+            if ( cell && neighbours < 2 || neighbours > 3 ) {
+                docCells[i].classList.remove('alive');
+                cellsRef[i] = 0;
 
-                const gridCell = grid[y][x]
-                const totalNeighbours = upperCells(grid,x,y) + bottomCells(grid,x,y) + lineCells(grid,x,y)
-
-                if (gridCell) {
-                    if (totalNeighbours < 2 || totalNeighbours > 3) {
-                        cell.classList.add('dead');
-                        newGen[y][x] = 0; // Cell dies
-                    } else {// Else cell lives
-                        cell.classList.add('alive');
-                    }
-                } else {
-                    if (totalNeighbours === 3) {
-                        cell.classList.add('alive');
-                        newGen[y][x] = 1; // Cell is born!
-                    } else {
-                        cell.classList.add('dead');
-                    }
-                }
-
-                row.appendChild(cell);
+            } else if (neighbours === 3) {
+                docCells[i].classList.add('alive');
+                cellsRef[i] = 1;
             }
-            game.appendChild(row) 
-        }
 
-        if (_.isEqual(grid, newGen)) {
+        })
+
+        console.log(cells)
+
+        if (_.isEqual(cells, cellsRef)) {
             clearInterval(loop)
             callback()
         } else {
             gen++;
             counter.innerHTML = gen;
-            grid = newGen;
+            hasNotChanged = 0;
         }
 
     }, interval)
 }
 
 // Counts the two adjacent cells to the current one
-function lineCells(grid,x,y) {
+function lineCells(cells, i) {
 
-    const prevCell = x > 0 
-                        ? grid[y][x-1] 
+    const prevCell = i > 0 
+                        ? cells[i-1] 
                         : 0;
 
-    const nextCell = x < grid[y].length - 1 
-                      ? grid[y][x+1] 
+    const nextCell = i < cells.length - 1 
+                      ? cells[i+1]  
                       : 0;
 
     return prevCell + nextCell
 }
 
 // Counts the three upper neighbour cells of the current one
-function upperCells(grid,x,y) {
-    if (grid[y-1]) {
+function upperCells(cells, i, width) {
 
-        const uCell = grid[y-1][x];
+    const upperRow = i-width;
 
-        const previousUCell = x > 0 
-                                ? grid[y-1][x-1] 
+    if (upperRow >= 0) {
+
+        const uCell = cells[upperRow];
+
+        const previousUCell = i > 0 
+                                ? cells[upperRow-1] 
                                 : 0;
 
-        const nextUCell = x < grid[y-1].length - 1 
-                            ? grid[y-1][x+1] 
+        const nextUCell = i < cells.length - 1 
+                            ? cells[upperRow+1] 
                             : 0;
 
         return uCell + previousUCell + nextUCell;
@@ -92,18 +79,17 @@ function upperCells(grid,x,y) {
 }
 
 // Counts the three lower neighbour cells of the current one
-function bottomCells(grid,x,y) {
-    if (grid[y+1]) {
+function bottomCells(cells, i, width) {
 
-        const bCell = grid[y+1][x];
+    const bottomRow = i+width;
 
-        const previousBCell = x > 0 
-                                ? grid[y+1][x-1] 
-                                : 0;
+    if (cells.length-1 - bottomRow >= 0) {
+
+        const bCell = cells[bottomRow];
+
+        const previousBCell = cells[bottomRow-1];
                                 
-        const nextBCell = x < grid[y+1].length - 1 
-                            ? grid[y+1][x+1] 
-                            : 0;
+        const nextBCell = cells[bottomRow+1];
 
         return bCell + previousBCell + nextBCell;
     }

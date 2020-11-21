@@ -3,23 +3,19 @@ import gameOfLife from './gameOfLife'
 const game = document.getElementById('game');
 const startBtn = document.getElementById('start-btn');
 const counter = document.getElementById('counter');
+const interval = document.querySelector('input');
 
-let grid = [
-	[0,0,0,0,0,0,0,0,0,0],
-	[0,0,1,0,0,0,0,0,0,0],
-	[0,0,0,1,0,0,0,0,0,0],
-	[0,1,1,1,0,0,0,0,0,0],
-	[0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0]
-];
+const gridWidth = 10
+const gridHeight = 6;
+let running = false;
 
 function generateGrid() {
-    for (let y = 0; y < grid.length; y++) {
+    for (let y = 0; y < gridHeight; y++) {
 
         const row = document.createElement('div');
         row.classList.add('row');
     
-        for (let x = 0; x < grid[y].length; x++) {
+        for (let x = 0; x < gridWidth; x++) {
     
             const cell = document.createElement('div');
             cell.classList.add('cell');
@@ -27,19 +23,27 @@ function generateGrid() {
     
             row.appendChild(cell);
         }
+
         game.appendChild(row) 
     }
 }
 
 function run() {
 
-    startBtn.classList.add('running');
-    counter.innerHTML = 0;
+    if (!running) {
+        startBtn.classList.add('running');
+        counter.innerHTML = 0;
 
-    const end = () => startBtn.classList.remove('running');
-    const interval = document.querySelector('input').value;
+        const onEnd = () => {
+            startBtn.classList.remove('running');
+            running = false
+        }
 
-    gameOfLife(interval, grid, game, counter, end);
+        running = true;
+
+        gameOfLife(interval.value, gridWidth, counter, onEnd);
+
+    }
 }
 
 startBtn.addEventListener('click', run);

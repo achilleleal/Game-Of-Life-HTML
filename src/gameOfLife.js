@@ -13,16 +13,18 @@ export default class GameOfLife {
 
         const rows = Array.from(document.getElementsByClassName('row'));
 
-        // Create a binary representation of each cell
-        // 0 = cell is dead
-        // 1 = cell is alive
-        let cellsRef = rows.map(
-            row => Array.from(row.children).map(
-                cell => cell.className === 'cell alive' ? 1 : 0
-            )
-        );
+        const grid = rows.map(row => Array.from(row.children))
 
-        this.interval = setInterval(() => { 
+        this.interval = setInterval(() => {
+
+            // Create a binary representation of each cell
+            // 0 = cell is dead
+            // 1 = cell is alive
+            let cellsRef = grid.map(
+                row => row.map(
+                    cell => cell.className === 'cell alive' ? 1 : 0
+                )
+            );
     
             // Deep clone the reference to be able to mutate it on the fly without affecting cell replication outcome
             // The clone will be used to loop through each cell and check its neighbours
@@ -36,12 +38,12 @@ export default class GameOfLife {
 
                             if ( cell && neighbours < 2 || neighbours > 3 ) {
                                 // Cell dies by underpopulation or overpopulation
-                                rows[y].children[x].classList.remove('alive'); // Update cell in display grid
+                                grid[y][x].classList.remove('alive'); // Update cell in display grid
                                 cellsRef[y][x] = 0; // Update cell status in ref
 
                             } else if (neighbours === 3) {
                                 // Cell is born when it has exactly 3 neighbours
-                                rows[y].children[x].classList.add('alive');
+                                grid[y][x].classList.add('alive');
                                 cellsRef[y][x] = 1;
                             }
                             // else the status of the cell doesn't change

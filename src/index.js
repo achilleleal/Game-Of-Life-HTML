@@ -6,8 +6,8 @@ const resetBtn = document.getElementById('reset-btn');
 const counter = document.getElementById('counter');
 const interval = document.querySelector('input');
 
-const gridWidth = 10
-const gridHeight = 6;
+const gridWidth = 40
+const gridHeight = 40;
 
 const Game = new GameOfLife()
 
@@ -41,8 +41,8 @@ function run() {
 function resetGrid() {
     Game.reset();
     revertStartBtn();
-    const cells = Array.from(document.getElementsByClassName('alive'));
-    cells.forEach(cell => cell.classList.remove('alive'));
+    const alives = Array.from(document.getElementsByClassName('alive'));
+    alives.forEach(cell => cell.classList.remove('alive'));
 }
 
 function generateGrid() {

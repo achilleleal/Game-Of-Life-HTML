@@ -12,15 +12,13 @@ footer,
 button {
     text-align: center;
     padding: 1rem 0;
-    background-color: rgb(0, 100, 5);
+    background-color: rgb(206, 111, 4);
     color: white;
 }
 
 main {
-    margin: 2rem auto;
-    padding: 0;
-    width: 90vw;
-    max-width: 1000px;
+    margin: 1rem auto;
+    padding: 0 5%;
 }
 
 button {
@@ -28,30 +26,24 @@ button {
     border: none;
     border-radius: .5rem;
     font-size: 1.25em;
-    background-color: rgb(0, 100, 5);
-    border: solid 2px rgb(0, 100, 5);
+    border: solid 2px rgb(206, 111, 4);
 }
 
 button:active, 
 button.running {
     background-color: transparent;
-    color: rgb(0, 100, 5);
+    color: rgb(206, 111, 4);
 }
 
-#game, 
-.cell {
-    border: 2px solid rgb(53, 163, 112);
-}
 
-#game {
-    margin: 1rem auto;
-    width: 100%;
-}
+
+/* GAME SETTINGS */
 
 .game-info {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 1.5rem;
 }
 
 .game-info div {
@@ -59,6 +51,19 @@ button.running {
     flex-direction: column;
     align-items: flex-end;
 }
+
+/* Game info media query */
+@media (max-width: 500px) {
+    .game-info {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .game-info div {
+        align-items: center;
+    }
+}
+/*-*/
 
 .game-btns {
     display: flex;
@@ -69,25 +74,40 @@ input {
     text-align: right;
     font-size: 1.5em;
     border: none;
-    border-bottom: solid rgb(53, 163, 112);
+    border-bottom: solid rgb(206, 111, 4);
     max-width: 25%;
+}
+
+
+
+/* BOARD */
+
+#game, 
+.cell {
+    border: 1px solid rgba(206, 112, 4, 0.411);
+}
+
+#game {
+    display: flex;
+    flex-direction: column;
+    margin: 1rem auto;
+    height: 85vw;
+    width: 85vw;
 }
 
 .row {
     display: flex;
+    height: 100%;
 }
 
 .cell {
     display: flex;
     justify-content: center;
     align-items: center;
-    max-width: 100px;
-    max-height: 100px;
-    width: 10vw;
-    height: 9vw;
-    background-color: rgb(250, 250, 250);
+    width: 100%;
+    background-color: rgba(255, 187, 0, 0.116);
 }
 
 .alive {
-    background-color: rgb(147, 221, 0);
+    background-color: rgb(248, 132, 0);
 }

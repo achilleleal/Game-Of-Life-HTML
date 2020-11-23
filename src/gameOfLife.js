@@ -1,46 +1,62 @@
 import _ from "lodash";
 
+export default class GameOfLife {
+    constructor() {
+        this.gens = 0;
+        this.running = false;
+        this.interval = undefined;
+    }
 
-const gameOfLife = (interval, width, counter, callback) => {
+    start(time, width, counter, callback) {
 
-    let gen = 0;
-    let hasNotChanged = 0;
+        this.running = true;
 
-    const docCells = document.getElementsByClassName('cell');
-    let cellsRef = Array.from(docCells).map(cell => cell.className === 'cell alive' ? 1 : 0);
-
-    const loop = setInterval(() => { 
-
-        const cells = [...cellsRef]
-
-        cells.forEach((cell, i) => {
-
-            const neighbours = lineCells(cells, i) + upperCells(cells, i, width) + bottomCells(cells, i, width)
-
-            if ( cell && neighbours < 2 || neighbours > 3 ) {
-                docCells[i].classList.remove('alive');
-                cellsRef[i] = 0;
-
-            } else if (neighbours === 3) {
-                docCells[i].classList.add('alive');
-                cellsRef[i] = 1;
+        const docCells = Array.from(document.getElementsByClassName('cell'));
+        let cellsRef = docCells.map(cell => cell.className === 'cell alive' ? 1 : 0);
+    
+        this.interval = setInterval(() => { 
+    
+            const cells = [...cellsRef]
+    
+            cells.forEach((cell, i) => {
+    
+                const neighbours = lineCells(cells, i) + upperCells(cells, i, width) + bottomCells(cells, i, width)
+    
+                if ( cell && neighbours < 2 || neighbours > 3 ) {
+                    docCells[i].classList.remove('alive');
+                    cellsRef[i] = 0;
+    
+                } else if (neighbours === 3) {
+                    docCells[i].classList.add('alive');
+                    cellsRef[i] = 1;
+                }
+    
+            })
+    
+            if (_.isEqual(cells, cellsRef)) {
+                this.stop()
+                callback()
+            } else {
+                this.gens++;
+                counter.innerHTML = this.gens;
             }
+    
+        }, time)
+    }
 
-        })
+    stop() {
+        clearInterval(this.interval);
+        this.running = false;
+    }
 
-        console.log(cells)
-
-        if (_.isEqual(cells, cellsRef)) {
-            clearInterval(loop)
-            callback()
-        } else {
-            gen++;
-            counter.innerHTML = gen;
-            hasNotChanged = 0;
-        }
-
-    }, interval)
+    reset() {
+        this.stop();
+        this.gens = 0;
+        counter.innerHTML = 0;
+    }
 }
+
+
 
 // Counts the two adjacent cells to the current one
 function lineCells(cells, i) {
@@ -95,5 +111,3 @@ function bottomCells(cells, i, width) {
     }
     return 0;
 }
-
-export default gameOfLife;

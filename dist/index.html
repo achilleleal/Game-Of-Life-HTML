@@ -14,18 +14,18 @@
     <main>
         <div class="game-info">
             <h2>Generation: <span id="counter"></span></h2>
-            <button id="start-btn">Start</button>
             <div>
                 <label for="interval">Replication interval</label>
                 <input 
-                  id="interval" 
-                  name="interval" 
-                  type="number"
-                  min="100" 
-                  step="10"
-                  placeholder="250"
+                  id="interval" name="interval" 
+                  type="number" min="100" step="10"
+                  value="300"
                 />
             </div>
+        </div>
+        <div class="game-btns">
+            <button id="reset-btn">Reset</button>
+            <button id="start-btn">Start</button>
         </div>
         <div id="game">
         </div>

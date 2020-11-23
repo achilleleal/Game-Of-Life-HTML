@@ -1,13 +1,49 @@
-import gameOfLife from './gameOfLife'
+import GameOfLife from './gameOfLife'
 
-const game = document.getElementById('game');
+const board = document.getElementById('game');
 const startBtn = document.getElementById('start-btn');
+const resetBtn = document.getElementById('reset-btn');
 const counter = document.getElementById('counter');
 const interval = document.querySelector('input');
 
 const gridWidth = 10
 const gridHeight = 6;
-let running = false;
+
+const Game = new GameOfLife()
+
+counter.innerHTML = 0;
+
+startBtn.addEventListener('click', run);
+
+resetBtn.addEventListener('click', resetGrid);
+
+generateGrid()
+
+
+//* Functions
+
+const revertStartBtn = () => {
+    startBtn.innerHTML = 'Start';
+    startBtn.classList.remove('running');
+}
+
+function run() {
+    if (!Game.running) {
+        startBtn.innerHTML = 'Stop';
+        startBtn.classList.add('running');
+        Game.start(interval.value, gridWidth, counter, revertStartBtn);
+    } else {
+        Game.stop();
+        revertStartBtn();
+    }
+}
+
+function resetGrid() {
+    Game.reset();
+    revertStartBtn();
+    const cells = Array.from(document.getElementsByClassName('alive'));
+    cells.forEach(cell => cell.classList.remove('alive'));
+}
 
 function generateGrid() {
     for (let y = 0; y < gridHeight; y++) {
@@ -24,28 +60,6 @@ function generateGrid() {
             row.appendChild(cell);
         }
 
-        game.appendChild(row) 
+        board.appendChild(row) 
     }
 }
-
-function run() {
-
-    if (!running) {
-        startBtn.classList.add('running');
-        counter.innerHTML = 0;
-
-        const onEnd = () => {
-            startBtn.classList.remove('running');
-            running = false
-        }
-
-        running = true;
-
-        gameOfLife(interval.value, gridWidth, counter, onEnd);
-
-    }
-}
-
-startBtn.addEventListener('click', run);
-
-generateGrid()

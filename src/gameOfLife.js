@@ -7,30 +7,38 @@ export default class GameOfLife {
         this.interval = undefined;
     }
 
-    start(time, width, counter, callback) {
+    start(time, counter, callback) {
 
         this.running = true;
 
-        const docCells = Array.from(document.getElementsByClassName('cell'));
-        let cellsRef = docCells.map(cell => cell.className === 'cell alive' ? 1 : 0);
-    
+        const rows = Array.from(document.getElementsByClassName('row'));
+
+        let cellsRef = rows.map(
+            row => Array.from(row.children).map(
+                cell => cell.className === 'cell alive' ? 1 : 0
+            )
+        );
+
         this.interval = setInterval(() => { 
     
-            const cells = [...cellsRef]
+            const cells = _.cloneDeep(cellsRef)
     
-            cells.forEach((cell, i) => {
-    
-                const neighbours = lineCells(cells, i) + upperCells(cells, i, width) + bottomCells(cells, i, width)
-    
-                if ( cell && neighbours < 2 || neighbours > 3 ) {
-                    docCells[i].classList.remove('alive');
-                    cellsRef[i] = 0;
-    
-                } else if (neighbours === 3) {
-                    docCells[i].classList.add('alive');
-                    cellsRef[i] = 1;
-                }
-    
+            cells.forEach(
+                (row, y) => {
+                    row.forEach(
+                        (cell, x) => {
+                            const neighbours = lineCells(cells, x, y) + upperCells(cells, x, y) + bottomCells(cells, x, y)
+
+                            if ( cell && neighbours < 2 || neighbours > 3 ) {
+                                rows[y].children[x].classList.remove('alive');
+                                cellsRef[y][x] = 0;
+
+                            } else if (neighbours === 3) {
+                                rows[y].children[x].classList.add('alive');
+                                cellsRef[y][x] = 1;
+                            }
+                        }
+                    )
             })
     
             if (_.isEqual(cells, cellsRef)) {
@@ -59,35 +67,26 @@ export default class GameOfLife {
 
 
 // Counts the two adjacent cells to the current one
-function lineCells(cells, i) {
+function lineCells(cells, x, y) {
 
-    const prevCell = i > 0 
-                        ? cells[i-1] 
-                        : 0;
+    const prevCell = cells[y][x-1] || 0;
 
-    const nextCell = i < cells.length - 1 
-                      ? cells[i+1]  
-                      : 0;
+    const nextCell = cells[y][x+1] || 0;
 
     return prevCell + nextCell
 }
 
 // Counts the three upper neighbour cells of the current one
-function upperCells(cells, i, width) {
+function upperCells(cells, x, y) {
 
-    const upperRow = i-width;
+    if (y > 0) {
+        const upperRow = y - 1
 
-    if (upperRow >= 0) {
+        const uCell = cells[upperRow][x];
 
-        const uCell = cells[upperRow];
+        const previousUCell = cells[upperRow][x-1] || 0;
 
-        const previousUCell = i > 0 
-                                ? cells[upperRow-1] 
-                                : 0;
-
-        const nextUCell = i < cells.length - 1 
-                            ? cells[upperRow+1] 
-                            : 0;
+        const nextUCell = cells[upperRow][x+1] || 0;
 
         return uCell + previousUCell + nextUCell;
     }
@@ -95,17 +94,16 @@ function upperCells(cells, i, width) {
 }
 
 // Counts the three lower neighbour cells of the current one
-function bottomCells(cells, i, width) {
+function bottomCells(cells, x, y) {
 
-    const bottomRow = i+width;
+    if (y < cells.length-1) {
+        const bottomRow = y+1;
 
-    if (cells.length-1 - bottomRow >= 0) {
+        const bCell = cells[bottomRow][x];
 
-        const bCell = cells[bottomRow];
-
-        const previousBCell = cells[bottomRow-1];
+        const previousBCell = cells[bottomRow][x-1] || 0 
                                 
-        const nextBCell = cells[bottomRow+1];
+        const nextBCell = cells[bottomRow][x+1] || 0;
 
         return bCell + previousBCell + nextBCell;
     }

@@ -31,7 +31,7 @@ function run() {
     if (!Game.running) {
         startBtn.innerHTML = 'Stop';
         startBtn.classList.add('running');
-        Game.start(interval.value, gridWidth, counter, revertStartBtn);
+        Game.start(interval.value, counter, revertStartBtn);
     } else {
         Game.stop();
         revertStartBtn();

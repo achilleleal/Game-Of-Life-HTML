@@ -19,6 +19,7 @@ button {
 main {
     margin: 1rem auto;
     padding: 0 5%;
+    max-width: 700px;
 }
 
 button {
@@ -93,6 +94,8 @@ input {
     margin: 1rem auto;
     height: 85vw;
     width: 85vw;
+    max-width: 700px;
+    max-height: 700px;
 }
 
 .row {

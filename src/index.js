@@ -6,8 +6,10 @@ const resetBtn = document.getElementById('reset-btn');
 const counter = document.getElementById('counter');
 const interval = document.querySelector('input');
 
-const gridWidth = 40
-const gridHeight = 40;
+let gridWidth = 30;
+let gridHeight = 30;
+
+checkScreenSize();
 
 const Game = new GameOfLife()
 
@@ -17,7 +19,11 @@ startBtn.addEventListener('click', run);
 
 resetBtn.addEventListener('click', resetGrid);
 
-generateGrid()
+interval.addEventListener('change', updateGameSpeed)
+
+window.addEventListener('resize', updateGrid);
+
+generateGrid();
 
 
 //* Functions
@@ -61,5 +67,40 @@ function generateGrid() {
         }
 
         board.appendChild(row) 
+    }
+}
+
+function checkScreenSize() {
+    let windowHasChanged = false;
+    const minScreenSize = 700;
+
+    const smallGridSize = 15;
+    const defaultGridSize = 30;
+
+    if (window.innerWidth < minScreenSize && gridWidth === defaultGridSize) {
+        gridWidth = smallGridSize;
+        gridHeight = smallGridSize;
+        windowHasChanged = true;
+
+    } else if (window.innerWidth > minScreenSize && gridWidth === smallGridSize) {
+        gridWidth = defaultGridSize;
+        gridHeight = defaultGridSize;
+        windowHasChanged = true;
+    }
+
+    return windowHasChanged;
+}
+
+function updateGrid() {
+    if (checkScreenSize()) {
+        board.innerHTML = '';
+        generateGrid();
+    }
+}
+
+function updateGameSpeed() {
+    if (Game.running) {
+        Game.stop();
+        Game.start(interval.value, counter, revertStartBtn);
     }
 }

@@ -6,8 +6,8 @@ const resetBtn = document.getElementById('reset-btn');
 const counter = document.getElementById('counter');
 const interval = document.querySelector('input');
 
-let gridWidth = 30;
-let gridHeight = 30;
+let gridWidth = 40;
+let gridHeight = 40;
 
 checkScreenSize();
 
@@ -19,7 +19,7 @@ startBtn.addEventListener('click', run);
 
 resetBtn.addEventListener('click', resetGrid);
 
-interval.addEventListener('change', updateGameSpeed)
+interval.addEventListener('change', updateGameSpeed);
 
 window.addEventListener('resize', updateGrid);
 
@@ -75,7 +75,7 @@ function checkScreenSize() {
     const minScreenSize = 700;
 
     const smallGridSize = 15;
-    const defaultGridSize = 30;
+    const defaultGridSize = 40;
 
     if (window.innerWidth < minScreenSize && gridWidth === defaultGridSize) {
         gridWidth = smallGridSize;

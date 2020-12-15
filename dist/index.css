@@ -36,6 +36,20 @@ button.running {
     color: rgb(206, 111, 4);
 }
 
+img {
+    filter: invert(100%);
+    width: 2.5rem;
+}
+
+img:hover {
+    transition: 250ms;
+    transform: scale(1.2);
+}
+
+p {
+    margin-top: 0;
+    margin-bottom: .75rem;
+}
 
 
 /* GAME SETTINGS */

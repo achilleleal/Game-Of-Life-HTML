@@ -1,0 +1,130 @@
+body {
+    margin: 0 auto;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+h1 {
+    margin: 0;
+}
+
+header, 
+footer, 
+button {
+    text-align: center;
+    padding: 1rem 0;
+    background-color: rgb(206, 111, 4);
+    color: white;
+}
+
+main {
+    margin: 1rem auto;
+    padding: 0 5%;
+    max-width: 700px;
+}
+
+button {
+    padding: .5rem 2rem;
+    border: none;
+    border-radius: .5rem;
+    font-size: 1.25em;
+    border: solid 2px rgb(206, 111, 4);
+}
+
+button:active, 
+button.running {
+    background-color: transparent;
+    color: rgb(206, 111, 4);
+}
+
+img {
+    filter: invert(100%);
+    width: 2.5rem;
+}
+
+img:hover {
+    transition: 250ms;
+    transform: scale(1.2);
+}
+
+p {
+    margin-top: 0;
+    margin-bottom: .75rem;
+}
+
+
+/* GAME SETTINGS */
+
+.game-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.game-info div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+/* Game info media query */
+@media (max-width: 500px) {
+    .game-info {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .game-info div {
+        align-items: center;
+    }
+}
+/*-*/
+
+.game-btns {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+input {
+    text-align: right;
+    font-size: 1.5em;
+    border: none;
+    border-bottom: solid rgb(206, 111, 4);
+    max-width: 25%;
+}
+
+
+
+/* BOARD */
+
+#game, 
+.cell {
+    border: 1px solid rgba(206, 112, 4, 0.411);
+}
+
+#game {
+    display: flex;
+    flex-direction: column;
+    margin: 1rem auto;
+    height: 85vw;
+    width: 85vw;
+    max-width: 700px;
+    max-height: 700px;
+}
+
+.row {
+    display: flex;
+    height: 100%;
+}
+
+.cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    background-color: rgba(255, 187, 0, 0.116);
+}
+
+.alive {
+    background-color: rgb(248, 132, 0);
+}
